@@ -6,10 +6,11 @@ import requests
 from datatypes import JobData, CompanyData
 
 
+MAX_PER_PAGE = 20
 BASE_URL = 'https://www.getonbrd.com/api/v0'
 CATEGORY_URL = f'{BASE_URL}/categories'
 COMPANY_URL = f'{BASE_URL}/companies'
-JOBS_URL = f'{CATEGORY_URL}/$CATEGORY_ID/jobs'
+JOBS_URL = f'{CATEGORY_URL}/$CATEGORY_ID/jobs?per_page={MAX_PER_PAGE}&page=$CURRENT_PAGE'
 COMPANY_DETAIL_URL = f'{COMPANY_URL}/$COMPANY_ID'
 
 
@@ -51,24 +52,44 @@ def scrap_category_list(verbosity = False):
 
     print(f'\tFound {len(categories)} categories, scraping jobs for each...')
 
-    for i, category in enumerate(categories[:2]): ## TODO
-        endpoint = _parse_endpoint(JOBS_URL, '$CATEGORY_ID', category)
-        jobs_raw = _send_request(endpoint, i)['data']
+    for i, category in enumerate(categories):
+        print(f'\tScraping the {category} category...')
+        
+        finished_scraping = False
+        j = 1
+        total_for_category = 0
 
-        print(f'\tFound {len(jobs_raw)} jobs in the {category} category, packing them...')
+        while not finished_scraping:
+            print(f'\t\tProcessing page {j}...')
 
-        for job in jobs_raw:
-            job_attrs = job['attributes']
-            company_id = job_attrs['company']['data']['id']
-            web = job['links']['public_url']
+            endpoint_category = _parse_endpoint(JOBS_URL, '$CATEGORY_ID', category)
+            endpoint = _parse_endpoint(endpoint_category, '$CURRENT_PAGE', j)
+            jobs_raw = _send_request(endpoint, (i + 1) * j)['data']
 
-            jobs.append(JobData(title = job_attrs['title'], functions = job_attrs['functions'],
-                                benefits = job_attrs['benefits'], desirable = job_attrs['desirable'],
-                                is_remote = job_attrs['remote'], remote_modality = job_attrs['remote_modality'],
-                                country = job_attrs['country'], min_salary = job_attrs['min_salary'],
-                                max_salary = job_attrs['max_salary'], company = _get_company_data(company_id)))
+            found_jobs = len(jobs_raw)
+            total_for_category += found_jobs
 
-        print(f'\tFinished listing jobs for the {category} category.')
+            if len(jobs_raw) > 0:
+                print(f'\t\t{len(jobs_raw)} jobs found, packing them...')
+
+                for job in jobs_raw:
+                    job_attrs = job['attributes']
+                    company_id = job_attrs['company']['data']['id']
+                    web = job['links']['public_url']
+
+                    jobs.append(JobData(title = job_attrs['title'], functions = job_attrs['functions'],
+                                        benefits = job_attrs['benefits'], desirable = job_attrs['desirable'],
+                                        is_remote = job_attrs['remote'], remote_modality = job_attrs['remote_modality'],
+                                        country = job_attrs['country'], min_salary = job_attrs['min_salary'],
+                                        max_salary = job_attrs['max_salary'], company = _get_company_data(company_id)))
+
+            else:
+                finished_scraping = True
+
+            j += 1
+
+
+        print(f'\tFinished listing {total_for_category} jobs for the {category} category.')
 
     print('Finished listing jobs')
 
