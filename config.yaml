@@ -1,5 +1,7 @@
 talent_sites:
   empleosti:
     url: https://empleosti.com.mx/
+    queries:
+      homepage_enterprise_links: '.enterprise a'
   peaku:
     url: https://peaku.co/

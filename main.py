@@ -2,6 +2,7 @@ import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
 
+import talent_placement_objects as talent
 from common import config
 
 logger = logging.getLogger(__name__)
@@ -10,6 +11,10 @@ def _talent_scraper(talent_site_uid):
     host = config()['talent_sites'][talent_site_uid]['url']
 
     logging.info('Beginning scraper for {}'.format(host))
+    homepage = talent.HomePage(talent_site_uid, host)
+
+    for link in homepage.talent_links:
+        print(link)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
