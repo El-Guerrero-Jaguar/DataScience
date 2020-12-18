@@ -2,24 +2,36 @@
 This module defines the JobData class
 """
 
+import json
+
+
 class JobData:
     """
     This data class represents a job vacancy
     """
     def __init__(self, title = None, functions = None, benefits = None,
-                 desireable = None, is_remote = None, remote_modality = None,
-                 country = None, min_salary = None, max_salary = None,
+                 desirable = None, is_remote = None, remote_modality = None,
+                 country = None, min_salary = None, max_salary = None, web = None,
                  company = None):
         self._title = title
         self._functions = functions
         self._benefits = benefits
-        self._desireable = desireable
+        self._desirable = desirable
         self._is_remote = is_remote
         self._remote_modality = remote_modality
         self._country = country
         self._min_salary = min_salary
         self._max_salary = max_salary
+        self._web = web
         self._company = company
+
+
+    def __str__(self):
+        return str(self.__dict__)
+
+
+    def __repr__(self):
+        return str(self)
 
 
 class CompanyData:

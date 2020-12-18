@@ -34,4 +34,4 @@ This corresponds to the Data Science system of the $(PROJECT_NAME) project that 
 
 ## Execution
 
-Use either  `python main.py`  or  `python3 main.py` for a guided Command Line Interface menu
+Use either  `python main.py`  or  `python3 main.py`
