@@ -3,5 +3,9 @@ talent_sites:
     url: https://empleosti.com.mx/
     queries:
       homepage_enterprise_links: '.enterprise a'
+      talent_list_url: '.job-eti a'
+      talent_title: ''
+      talent_review: ''
+
   peaku:
     url: https://peaku.co/

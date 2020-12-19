@@ -3,6 +3,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 import talent_placement_objects as talent
+from list_vacant_eterprice import ListVacant as lstvacant
 from common import config
 
 logger = logging.getLogger(__name__)
@@ -13,8 +14,13 @@ def _talent_scraper(talent_site_uid):
     logging.info('Beginning scraper for {}'.format(host))
     homepage = talent.HomePage(talent_site_uid, host)
 
+    total_list = []
     for link in homepage.talent_links:
-        print(link)
+        total_list.append(lstvacant.vacant_link(link))
+    
+    #print(total_list)
+
+    return total_list
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
