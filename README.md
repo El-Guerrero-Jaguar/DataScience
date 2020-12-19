@@ -34,4 +34,6 @@ This corresponds to the Data Science system of the $(PROJECT_NAME) project that 
 
 ## Execution
 
-Use either  `python main.py`  or  `python3 main.py`
+Use either  `python main.py <index of site>`  or  `python3 main.py <index of site>`
+
+Site indexes are 1 for Get on Board and 2 for EmpleosTI
