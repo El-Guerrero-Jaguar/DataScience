@@ -31,8 +31,28 @@ def scrap_gob():
 
         with open('gob_output.json', 'w', encoding = 'utf-8') as output:
             output.write(job_json)
+            
+        #print(job_json_list[:2])
+        send_graphql_data(job_json_list)
 
-        #send_graphql_data(job_json_list)
+        # send_graphql_data([{"title":"titulito",
+        # "company":"platzi",
+        # "description":"description",
+        # "town":"town",
+        # "modality":"modality",
+        # "date":"2020-10-12",
+        # "salary":"salary",
+        # "urlVacant":"urlVacant",
+        # "urlCompany":"urlCompany"},
+        # {"title":"otro mas",
+        # "company":"la mejor",
+        # "description":"description",
+        # "town":"town",
+        # "modality":"modality",
+        # "date":"2020-10-12",
+        # "salary":"salary",
+        # "urlVacant":"urlVacant",
+        # "urlCompany":"urlCompany"}])
 
     except ValueError:
         print('Only numbers are valid as an argument')
@@ -61,7 +81,7 @@ if __name__ == "__main__":
 
     talent_site_choices = list(config()['talent_sites'].keys())
 
-    parser.add_argument('talent_site', 
+    parser.add_argument('talent_site',
                         help = 'The talent hunting site you want to scrape', 
                         type = str,
                         choices = talent_site_choices)
@@ -69,7 +89,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if talent_site_choices[0] == args.talent_site:        
+    if talent_site_choices[0] == args.talent_site:
         scrap_gob()
 
     else:

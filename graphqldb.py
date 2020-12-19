@@ -48,21 +48,36 @@ def send_graphql_data(data):
                 }
     """
 
+
+
     responses = []
 
-    for i in range(len(data)):
+    for item in data:
+        #print(item['fecha'])
         fields = {
-                    'title': data[i]['titulo'],
-                    'company': data[i]['empresa'],
-                    'description': data[i]['descripcion'],
-                    'town': '',
-                    'modality': data[i]['modalidad'],
-                    'date': data[i]['fecha'],
-                    'salary': data[i]['salario'],
-                    'urlVacant': data[i]['url_vacante'],
-                    'urlCompany': data[i]['url_empresa']
+                    'title': item['titulo'],
+                    'company': item['empresa'],
+                    'description': item['descripcion'],
+                    'town': item['pais'],
+                    'modality': item['modalidad'],
+                    'date': item['fecha'],
+                    'salary': item['salario'],
+                    'urlVacant': item['url_vacante'],
+                    'urlCompany': item['url_empresa']
                 }
 
         responses.append(client.execute(query = mutation, variables = fields))
+
+    # return client.execute(query = mutation, variables = {
+    #     "title":"titl prueba",
+    #     "company":"company de prueba",
+    #     "description":"description",
+    #     "town":"town",
+    #     "modality":"modality",
+    #     "date":"2020-10-12",
+    #     "salary":"salary",
+    #     "urlVacant":"urlVacant",
+    #     "urlCompany":"urlCompany"
+    # })
 
     return responses

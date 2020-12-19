@@ -24,7 +24,7 @@ class JobData:
         self._min_salary = min_salary
         self._max_salary = max_salary
         self._web = web
-        self._date = str(datetime.fromtimestamp(date))
+        self._date = str(datetime.fromtimestamp(date).date())
         self._company_name = company_name
         self._company_website = company_website
 
