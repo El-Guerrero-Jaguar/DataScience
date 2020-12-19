@@ -1,4 +1,6 @@
 talent_sites:
+  gob:
+
   empleosti:
     url: https://empleosti.com.mx/
     queries:
