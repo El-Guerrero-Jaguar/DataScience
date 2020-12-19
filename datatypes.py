@@ -48,12 +48,13 @@ class JobData:
         Returns a json representation of the JobData instance
         """
         return {
-            'title': self._title,
-            'company': self._company_name,
-            'description': f'{self._functions}\n{self._benefits}\n{self._desirable}',
-            'modality': self._remote_modality,
-            'country': self._country,
-            'salary': f'{self._min_salary}, {self._min_salary}',
-            'company_url': self._company_website,
-            'date': self._date
+            'titulo': self._title,
+            'empresa': self._company_name,
+            'pais': self._country,
+            'descripcion': f'{self._functions}\n{self._benefits}\n{self._desirable}',
+            'modalidad': self._remote_modality,
+            'fecha': self._date,
+            'salario': f'{self._min_salary}, {self._min_salary}',
+            'url_vacante': self._web,
+            'url_empresa': self._company_website
         }

@@ -53,7 +53,7 @@ def scrap_category_list(verbosity = False):
 
     print(f'\tFound {len(categories)} categories, scraping jobs for each...')
 
-    for i, category in enumerate(categories[:1]): ##TODO
+    for i, category in enumerate(categories):
         print(f'\tScraping the {category} category...')
         
         finished_scraping = False
@@ -87,7 +87,7 @@ def scrap_category_list(verbosity = False):
                                         is_remote = job_attrs['remote'], remote_modality = job_attrs['remote_modality'],
                                         country = job_attrs['country'], min_salary = job_attrs['min_salary'],
                                         max_salary = job_attrs['max_salary'], date = job_attrs['published_at'],
-                                        company_name = company_name, company_website = company_web))
+                                        web = web, company_name = company_name, company_website = company_web))
 
             else:
                 finished_scraping = True
@@ -125,5 +125,5 @@ def _send_request(endpoint, i = 0, verbosity = False):
 
         return response.json()
     except Exception as e:
-        print('An error occurred when attempting the request with index {i}. ', e)
+        print(f'An error occurred when attempting the request with index {i}. ', e)
         return None
