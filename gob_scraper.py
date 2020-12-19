@@ -53,7 +53,7 @@ def scrap_category_list(verbosity = False):
 
     print(f'\tFound {len(categories)} categories, scraping jobs for each...')
 
-    for i, category in enumerate(categories[:1]):  ## TODO
+    for i, category in enumerate(categories):
         print(f'\tScraping the {category} category...')
         
         finished_scraping = False
@@ -71,7 +71,7 @@ def scrap_category_list(verbosity = False):
             total_for_category += found_jobs
 
             if len(jobs_raw) > 0:
-                print(f'\t\t{len(jobs_raw)} jobs found, packing them...')
+                print(f'\t\t\t{len(jobs_raw)} jobs found, packing them...')
 
                 for k, job in enumerate(jobs_raw):
                     if k % 20 == 0:

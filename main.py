@@ -8,6 +8,9 @@ import gob_scraper
 from graphqldb import send_graphql_data
 
 
+PREFIXES = ['gob_', 'empleosti_']
+
+
 def run():
     """
     Entry point of the program
@@ -18,19 +21,22 @@ def run():
 
             if option == 1:
                 job_list = gob_scraper.scrap_category_list()
-            else:
+            elif option == 2:
                 ## TODO  Here we can put the code to execute the other scraper
                 pass
+            else:
+                print('Not supported index')
+                sys.exit()
 
             print('Transforming job list into JSON')
 
             job_json_list = [job.to_json() for job in job_list]
-            #job_json = json.dumps(job_json_list, ensure_ascii = False)
+            job_json = json.dumps(job_json_list, ensure_ascii = False)
 
-            #with open('output.json', 'w', encoding = 'utf-8') as output:
-            #    output.write(job_json)
+            with open(f'{PREFIXES[option - 1]}output.json', 'w', encoding = 'utf-8') as output:
+                output.write(job_json)
 
-            send_graphql_data(job_json_list)
+            #send_graphql_data(job_json_list)
 
             print('Finished scraping process')
         except ValueError:
