@@ -5,6 +5,7 @@ This module is the entry point for the scraping application
 import sys
 import json
 import gob_scraper
+from graphqldb import send_graphql_data
 
 
 def run():
@@ -24,10 +25,12 @@ def run():
             print('Transforming job list into JSON')
 
             job_json_list = [job.to_json() for job in job_list]
-            job_json = json.dumps(job_json_list, ensure_ascii = False)
+            #job_json = json.dumps(job_json_list, ensure_ascii = False)
 
-            with open('output.json', 'w', encoding = 'utf-8') as output:
-                output.write(job_json)
+            #with open('output.json', 'w', encoding = 'utf-8') as output:
+            #    output.write(job_json)
+
+            send_graphql_data(job_json_list)
 
             print('Finished scraping process')
         except ValueError:

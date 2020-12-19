@@ -53,7 +53,7 @@ def scrap_category_list(verbosity = False):
 
     print(f'\tFound {len(categories)} categories, scraping jobs for each...')
 
-    for i, category in enumerate(categories):
+    for i, category in enumerate(categories[:1]):  ## TODO
         print(f'\tScraping the {category} category...')
         
         finished_scraping = False
