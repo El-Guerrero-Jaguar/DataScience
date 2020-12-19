@@ -2,11 +2,12 @@
 This module scraps the Get on Board website using its REST API
 """
 
+import time
 import requests
-from datatypes import JobData, CompanyData
+from datatypes import JobData
 
 
-MAX_PER_PAGE = 20
+MAX_PER_PAGE = 40
 BASE_URL = 'https://www.getonbrd.com/api/v0'
 CATEGORY_URL = f'{BASE_URL}/categories'
 COMPANY_URL = f'{BASE_URL}/companies'
@@ -52,7 +53,7 @@ def scrap_category_list(verbosity = False):
 
     print(f'\tFound {len(categories)} categories, scraping jobs for each...')
 
-    for i, category in enumerate(categories):
+    for i, category in enumerate(categories[:1]): ##TODO
         print(f'\tScraping the {category} category...')
         
         finished_scraping = False
@@ -72,19 +73,25 @@ def scrap_category_list(verbosity = False):
             if len(jobs_raw) > 0:
                 print(f'\t\t{len(jobs_raw)} jobs found, packing them...')
 
-                for job in jobs_raw:
+                for k, job in enumerate(jobs_raw):
+                    if k % 20 == 0:
+                        time.sleep(0.05)
+
                     job_attrs = job['attributes']
                     company_id = job_attrs['company']['data']['id']
+                    company_name, company_web = _get_company_data(company_id)
                     web = job['links']['public_url']
 
                     jobs.append(JobData(title = job_attrs['title'], functions = job_attrs['functions'],
                                         benefits = job_attrs['benefits'], desirable = job_attrs['desirable'],
                                         is_remote = job_attrs['remote'], remote_modality = job_attrs['remote_modality'],
                                         country = job_attrs['country'], min_salary = job_attrs['min_salary'],
-                                        max_salary = job_attrs['max_salary'], company = _get_company_data(company_id)))
+                                        max_salary = job_attrs['max_salary'], date = job_attrs['published_at'],
+                                        company_name = company_name, company_website = company_web))
 
             else:
                 finished_scraping = True
+                print('\t\tNo jobs in this page.')
 
             j += 1
 
@@ -100,15 +107,10 @@ def _get_company_data(company_id):
     """
     Retrieves the data of a company identified by the provided id
     """
-    endpoint = _parse_endpoint(COMPANY_DETAIL_URL, '$COMPANY_ID', company_id)
-    
+    endpoint = _parse_endpoint(COMPANY_DETAIL_URL, '$COMPANY_ID', company_id)    
     response_dict = _send_request(endpoint)['data']['attributes']
-    return CompanyData(name = response_dict['name'], 
-                       description = response_dict['description'],
-                       long_description = response_dict['long_description'],
-                       projects = response_dict['projects'], 
-                       benefits = response_dict['benefits'],
-                       web = response_dict['web'])
+
+    return response_dict['name'], response_dict['web']
 
 
 def _send_request(endpoint, i = 0, verbosity = False):

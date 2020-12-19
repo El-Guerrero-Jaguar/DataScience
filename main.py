@@ -17,11 +17,19 @@ def run():
 
             if option == 1:
                 job_list = gob_scraper.scrap_category_list()
-                print(*job_list, sep='\n')
-
             else:
                 ## TODO  Here we can put the code to execute the other scraper
                 pass
+
+            print('Transforming job list into JSON')
+
+            job_json_list = [job.to_json() for job in job_list]
+            job_json = json.dumps(job_json_list, ensure_ascii = False)
+
+            with open('output.json', 'w', encoding = 'utf-8') as output:
+                output.write(job_json)
+
+            print('Finished scraping process')
         except ValueError:
             print('Only numbers are valid as an argument')
 

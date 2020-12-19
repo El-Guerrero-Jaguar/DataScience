@@ -1,8 +1,9 @@
 """
-This module defines the JobData class
+This module defines the datatypes used by the application
 """
 
 import json
+from datetime import datetime
 
 
 class JobData:
@@ -12,7 +13,7 @@ class JobData:
     def __init__(self, title = None, functions = None, benefits = None,
                  desirable = None, is_remote = None, remote_modality = None,
                  country = None, min_salary = None, max_salary = None, web = None,
-                 company = None):
+                 date = None, company_name = None, company_website = None):
         self._title = title
         self._functions = functions
         self._benefits = benefits
@@ -23,7 +24,15 @@ class JobData:
         self._min_salary = min_salary
         self._max_salary = max_salary
         self._web = web
-        self._company = company
+        self._date = str(datetime.fromtimestamp(date))
+        self._company_name = company_name
+        self._company_website = company_website
+
+        if self._min_salary == None:
+            self._min_salary = 'N/A'
+
+        if self._max_salary == None:
+            self._max_salary = 'N/A'
 
 
     def __str__(self):
@@ -33,16 +42,18 @@ class JobData:
     def __repr__(self):
         return str(self)
 
-
-class CompanyData:
-    """
-    This class contains information of a company
-    """
-    def __init__(self, name = None, description = None, long_description = None,
-                 projects = None, benefits = None, web = None):
-        self._name = name
-        self._descritpion = description
-        self._long_description = long_description
-        self._projects = projects
-        self._benefits = benefits
-        self._web = web
+    
+    def to_json(self):
+        """
+        Returns a json representation of the JobData instance
+        """
+        return {
+            'title': self._title,
+            'company': self._company_name,
+            'description': f'{self._functions}\n{self._benefits}\n{self._desirable}',
+            'modality': self._remote_modality,
+            'country': self._country,
+            'salary': f'{self._min_salary}, {self._min_salary}',
+            'company_url': self._company_website,
+            'date': self._date
+        }
