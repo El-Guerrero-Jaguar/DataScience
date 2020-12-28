@@ -1,5 +1,6 @@
 import argparse
 import logging
+import json
 logging.basicConfig(level=logging.INFO)
 
 import talent_placement_objects as talent
@@ -17,10 +18,12 @@ def _talent_scraper(talent_site_uid):
     total_list = []
     for link in homepage.talent_links:
         total_list.append(lstvacant.vacant_link(link))
-    
-    #print(total_list)
 
-    return total_list
+    #print(total_list)
+    with open('totjob.json', 'w') as file:
+        json.dump(total_list, file, indent=4)
+
+    #return total_list
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
