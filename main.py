@@ -73,7 +73,10 @@ def scrap_empleosti(talent_site_uid):
     
     #print(total_list)
 
-    return total_list
+    with open('totjob.json', 'w') as file:
+        json.dump(total_list, file, indent=4)
+        
+    #return total_list
 
 
 if __name__ == "__main__":
